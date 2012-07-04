@@ -11,7 +11,7 @@
 	<packaging>jar</packaging>
 	
 	<name>i2peer: j2se</name>
-
+	
 	<dependencies>
 	    <dependency>
 			<groupId>org.jboss.netty</groupId>
@@ -88,6 +88,12 @@
 	</dependencies>
 
 	<build>
+	    <resources>
+      		<resource>
+      		    <directory>src/main/resources</directory>
+        		<filtering>true</filtering>
+      		</resource>
+    	</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -97,6 +103,16 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<!--  
+			  <plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-surefire-plugin</artifactId>
+			    <version>2.12</version>
+			    <configuration>
+
+			   	</configuration>
+			  </plugin>  
+			  -->					
 		</plugins>
 	</build>
 </project>
