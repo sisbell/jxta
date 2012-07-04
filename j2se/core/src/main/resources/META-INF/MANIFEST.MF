@@ -2,7 +2,7 @@ Built-By: ${user.name}
 Specification-Title: JXTA Protocols
 Specification-Version: ${project.version}
 Specification-Vendor: i2peer
-Main-Class: net.jxta.impl.peergroup.Boot
+Main-Class: org.i2peer.Booter
 Implementation-Title: JXSE API
 Implementation-Version: ${project.version}
 Sealed: true
