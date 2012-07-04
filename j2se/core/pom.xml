@@ -99,7 +99,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
-            <manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifest>
               <addClasspath>true</addClasspath>
             </manifest>
