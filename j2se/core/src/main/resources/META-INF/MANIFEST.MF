@@ -1,13 +1,8 @@
-<manifest>
-    <attribute name="Built-By" value="${user.name}" />
-    <attribute name="Built-At" value="${DSTAMP}" />
-    <attribute name="Specification-Title" value="JXTA Protocols" />
-    <attribute name="Specification-Version" value="${project.version}" />
-    <attribute name="Specification-Vendor" value="i2peer" />
-    <attribute name="Main-Class" value="net.jxta.impl.peergroup.Boot" />
-
-    <attribute name="Implementation-Title" value="JXSE API" />
-    <attribute name="Implementation-Version" value="${project.version}" />
-    <attribute name="sealed" value="true" />
-
-</manifest>
+Built-By: ${user.name}
+Specification-Title: JXTA Protocols
+Specification-Version: ${project.version}
+Specification-Vendor: i2peer
+Main-Class: net.jxta.impl.peergroup.Boot
+Implementation-Title: JXSE API
+Implementation-Version: ${project.version}
+Sealed: true

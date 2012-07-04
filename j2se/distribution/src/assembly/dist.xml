@@ -1,0 +1,29 @@
+<assembly>
+  <id>apk-archive</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+
+  <moduleSets>
+    <moduleSet>
+      <useAllReactorProjects>true</useAllReactorProjects>	
+      <includes>
+        <include>*:j2se-core</include>
+      </includes>
+      <binaries>
+        <outputDirectory>.</outputDirectory>
+        <unpack>false</unpack>
+		<includeDependencies>true</includeDependencies>
+		<dependencySets>
+		    <dependencySet>
+		        <includes>
+		            <include>*</include>
+		        </includes>        
+		    </dependencySet>
+		</dependencySets>
+      </binaries>
+    </moduleSet>
+  </moduleSets>
+
+</assembly>

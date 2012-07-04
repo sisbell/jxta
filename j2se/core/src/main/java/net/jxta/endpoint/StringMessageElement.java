@@ -336,7 +336,7 @@ public class StringMessageElement extends TextMessageElement {
             cachedChars = cachedGetChars.get();
         }
 
-        if (null == cachedChars) {
+        if (null == cachedChars) { 
             if (Logging.SHOW_FINER && LOG.isLoggable(Level.FINER)) {
                 LOG.finer("creating cachedGetChars of " + getClass().getName() + '@' + Integer.toHexString(hashCode()));
             }
@@ -541,7 +541,7 @@ public class StringMessageElement extends TextMessageElement {
 
             int readin = before - bb.remaining();
 
-            if (CoderResult.UNDERFLOW == result) {
+            if (result.isUnderflow()) {
                 if (0 == readin) {
                     return -1;
                 } else {
@@ -549,7 +549,7 @@ public class StringMessageElement extends TextMessageElement {
                 }
             }
 
-            if (CoderResult.OVERFLOW == result) {
+            if (result.isOverflow()) {
                 return readin;
             }
 
