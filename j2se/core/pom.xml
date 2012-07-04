@@ -2,15 +2,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.i2peer.j2se</groupId>
-		<artifactId>j2se</artifactId>	  
+		<groupId>org.i2peer</groupId>
+		<artifactId>i2peer-j2se-parent</artifactId>	  
 		<version>3.0</version>  
 	</parent>
-	<groupId>org.i2peer.j2se</groupId>
-	<artifactId>j2se-core</artifactId>
+	<groupId>org.i2peer</groupId>
+	<artifactId>i2peer-j2se-core</artifactId>
 	<packaging>jar</packaging>
 	
-	<name>i2peer: j2se</name>
+	<name>i2peer: i2peer-j2se-core</name>
 	
 	<dependencies>
 	    <dependency>

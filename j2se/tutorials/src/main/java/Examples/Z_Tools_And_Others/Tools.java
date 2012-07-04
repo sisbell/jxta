@@ -43,6 +43,7 @@ package Examples.Z_Tools_And_Others;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -54,6 +55,7 @@ import net.jxta.document.StructuredDocument;
 import net.jxta.endpoint.Message;
 import net.jxta.endpoint.Message.ElementIterator;
 import net.jxta.endpoint.MessageElement;
+import net.jxta.id.ID;
 import net.jxta.peer.PeerID;
 import net.jxta.platform.NetworkConfigurator;
 import net.jxta.platform.NetworkManager;
@@ -67,8 +69,9 @@ public class Tools {
     
     public static void popConnectedRendezvous(RendezVousService TheRendezVous, String Name) {
         
-        List<PeerID> TheList = TheRendezVous.getLocalRendezVousView();
-        Iterator<PeerID> Iter = TheList.iterator();
+    	List<ID> TheList = Collections.list(TheRendezVous.getConnectedRendezVous());
+        Iterator<ID> Iter = TheList.iterator();
+        
         int Count = 0;
         
         while (Iter.hasNext()) {
@@ -90,8 +93,8 @@ public class Tools {
     
     public static void popConnectedPeers(RendezVousService TheRendezVous, String Name) {
         
-        List<PeerID> TheList = TheRendezVous.getLocalRendezVousView();
-        Iterator<PeerID> Iter = TheList.iterator();
+    	List<ID> TheList = Collections.list(TheRendezVous.getConnectedRendezVous());
+        Iterator<ID> Iter = TheList.iterator();
         int Count = 0;
         
         while (Iter.hasNext()) {

@@ -3,21 +3,21 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.i2peer.j2se</groupId>
-		<artifactId>j2se</artifactId>	  
+		<groupId>org.i2peer</groupId>
+		<artifactId>i2peer-j2se-parent</artifactId>	  
 		<version>3.0</version>  
 	</parent>
 
-	<groupId>com.i2peer.j2se</groupId>
-	<artifactId>j2se-distribution</artifactId>
+	<groupId>com.i2peer</groupId>
+	<artifactId>i2peer-j2se-distribution</artifactId>
 	<packaging>pom</packaging>
 
 	<name>Distribution</name>
 
 	<dependencies>
 	    <dependency>
-	        <groupId>org.i2peer.j2se</groupId>
-			<artifactId>j2se-core</artifactId>	  
+	        <groupId>org.i2peer</groupId>
+			<artifactId>i2peer-j2se-core</artifactId>	  
 			<version>${project.version}</version>  
 	    </dependency>	
 	</dependencies>

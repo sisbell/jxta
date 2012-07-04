@@ -634,4 +634,38 @@ public class NetworkManager implements RendezvousListener {
         return (started && (!stopped));
     }
 
+    /**
+     * Recursively deletes the content of a directory directory. This can be usefull
+     * to clean-up persisted cache content.
+     *
+     * @param TheFile the directory to delete
+     */
+    public static void RecursiveDelete(File TheFile) {
+
+        // Checking parameter
+        if ( TheFile == null )
+        	throw new IllegalArgumentException("file param is null");
+        
+        if ( TheFile.isDirectory() ) {
+            try {
+            	TheFile.getCanonicalPath();
+            } catch (IOException ex) {
+            	LOG.warning("Cannot retrieve canonical path");
+            	return;
+            }
+        }
+
+        File[] SubFiles = TheFile.listFiles();
+
+        if (SubFiles!=null) {
+            for(int i=0;i<SubFiles.length;i++) {
+                if (SubFiles[i].isDirectory()) {
+                    RecursiveDelete(SubFiles[i]);
+                }
+                SubFiles[i].delete();
+            }
+        TheFile.delete();
+        }
+
+    }
 }

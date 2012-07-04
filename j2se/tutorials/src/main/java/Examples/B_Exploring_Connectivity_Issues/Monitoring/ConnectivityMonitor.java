@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -73,6 +74,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import net.jxta.endpoint.EndpointService;
+import net.jxta.id.ID;
 import net.jxta.peer.PeerID;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.rendezvous.RendezVousService;
@@ -81,6 +83,9 @@ import net.jxta.rendezvous.RendezvousListener;
 
 /**
  * This frame collects and displays connectivity information from a peergroup.
+ */
+/*
+ * Need to fix missing methods
  */
 public class ConnectivityMonitor extends JFrame implements Runnable {
 
@@ -607,8 +612,7 @@ public class ConnectivityMonitor extends JFrame implements Runnable {
             this.IsRDVCheckBox.setSelected(TmpRDVS.isRendezVous());
             this.IsConnectedToRDVCheckBox.setSelected(TmpRDVS.isConnectedToRendezVous());
 
-            List<PeerID> Items = TmpRDVS.getLocalRendezVousView();
-
+           List<ID> Items = Collections.list(TmpRDVS.getConnectedRendezVous());
             // Sorting Peer IDs
             List<String> StrItems = new ArrayList<String>();
             for (int i=0;i<Items.size();i++) 
@@ -627,7 +631,7 @@ public class ConnectivityMonitor extends JFrame implements Runnable {
 
         if ( TmpES != null ) {
 
-            Collection<PeerID> x = TmpES.getConnectedRelayPeers();
+            Collection<PeerID> x = null;//TODO: missing TmpES.getConnectedRelayPeers();
 
             if ( x.isEmpty() ) {
 
@@ -643,7 +647,7 @@ public class ConnectivityMonitor extends JFrame implements Runnable {
 
             }
 
-            List<PeerID> Items = TmpRDVS.getLocalEdgeView();
+            List<PeerID> Items = null;//TODO: missing method TmpRDVS.getLocalEdgeView();
 
             // Sorting Peer IDs
             List<String> StrItems = new ArrayList<String>();

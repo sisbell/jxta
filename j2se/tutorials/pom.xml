@@ -3,21 +3,23 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.i2peer</groupId>
-		<artifactId>i2peer</artifactId>	 
-		<version>3.0</version>   
+		<artifactId>i2peer-j2se-parent</artifactId>	  
+		<version>3.0</version>  
 	</parent>
 	<groupId>org.i2peer</groupId>
-	<artifactId>i2peer-j2se-parent</artifactId>
-	<packaging>pom</packaging>
-
-	<name>i2peer: i2peer-j2se-parent</name>
+	<artifactId>i2peer-j2se-tutorials</artifactId>
+	<packaging>jar</packaging>
 	
-	<modules>
-		<module>core</module>
-		<module>tutorials</module>
-		<module>distribution</module>
-	</modules>
-
+	<name>i2peer: i2peer-j2se-tutorials</name>
+	
+	<dependencies>
+	    <dependency>
+	        <groupId>org.i2peer</groupId>
+			<artifactId>i2peer-j2se-core</artifactId>	  
+			<version>${project.version}</version>  
+	    </dependency>	
+	</dependencies>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -27,7 +29,7 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
-			</plugin>
+			</plugin>					
 		</plugins>
 	</build>
 </project>

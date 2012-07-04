@@ -9,7 +9,7 @@
     <moduleSet>
       <useAllReactorProjects>true</useAllReactorProjects>	
       <includes>
-        <include>*:j2se-core</include>
+        <include>*:i2peer-j2se-core</include>
       </includes>
       <binaries>
         <outputDirectory>.</outputDirectory>
