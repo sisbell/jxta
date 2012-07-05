@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.i2peer</groupId>
 		<artifactId>i2peer-j2se-parent</artifactId>	  
-		<version>3.0</version>  
+		<version>3.0-SNAPSHOT</version>  
 	</parent>
 
 	<groupId>com.i2peer</groupId>
