@@ -1,0 +1,8 @@
+Built-By: ${user.name}
+Specification-Title: JXTA Shell
+Specification-Version: ${project.version}
+Specification-Vendor: i2peer
+Main-Class: Launch
+Implementation-Title: JXSE Shell
+Implementation-Version: ${project.version}
+Sealed: true
