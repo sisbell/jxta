@@ -12,6 +12,7 @@
 	<name>i2peer: i2peer-j2se-parent</name>
 	
 	<modules>
+	    <module>apps</module>
 		<module>core</module>
 		<module>tutorials</module>
 		<module>distribution</module>
