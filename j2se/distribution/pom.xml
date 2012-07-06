@@ -19,7 +19,12 @@
 	        <groupId>org.i2peer</groupId>
 			<artifactId>i2peer-j2se-core</artifactId>	  
 			<version>${project.version}</version>  
-	    </dependency>	
+	    </dependency>
+	    <dependency>
+	        <groupId>org.i2peer</groupId>
+			<artifactId>i2peer-jxse-shell</artifactId>	  
+			<version>${project.version}</version>  
+	    </dependency>		
 	</dependencies>
 
 	<build>

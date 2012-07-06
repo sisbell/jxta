@@ -10,6 +10,7 @@
       <useAllReactorProjects>true</useAllReactorProjects>	
       <includes>
         <include>*:i2peer-j2se-core</include>
+        <include>*:i2peer-jxse-shell</include>
       </includes>
       <binaries>
         <outputDirectory>.</outputDirectory>
