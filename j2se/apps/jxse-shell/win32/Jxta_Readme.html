@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org">
+    <meta http-equiv="CONTENT-TYPE" content=
+    "text/html; charset=iso-8859-1">
+
+    <title>JXTA Platform Read Me</title>
+  </head>
+
+  <body>
+    <p align="Left"><b>JXTA Platform Read Me (2003.12.21)</b></p>
+
+    <ol type="I">
+      <li>
+        <p><a href="#Contents:">Distribution Contents</a></p>
+      </li>
+
+      <li>
+        <p><a href="#III. How to Install">How to Install</a></p>
+      </li>
+    </ol>
+
+    <p><a name="Contents:"></a><b>II. Distribution Contents</b>:</p>
+
+    <p>The jxtashell.zip file contains the following&nbsp; files:</p>
+
+    <ol>
+      <li>
+        <p style="margin-bottom: 0in; ">shell/jxta.exe (Window
+        excecutable file)</p>
+      </li>
+
+      <li>
+        <p style="margin-bottom: 0in; ">shell/run.sh&nbsp; (Unix Shell
+        script)</p>
+      </li>
+
+      <li>
+        <p style="margin-bottom: 0in; ">Jxta_Readme.html ( Release
+        Notes &amp; Configuration File)</p>
+      </li>
+
+      <li>
+        <p style="margin-bottom: 0in; ">lib/jxta.jar (Core
+        Platform)</p>
+      </li>
+
+      <li>
+        <p>lib/jxtashell.jar (sample Jxta Shell application)</p>
+      </li>
+    </ol>
+
+    <p><a name="III. How to Install"></a><b>III. How to Install</b></p>
+
+    <p>You need to unzip the zip file jxtashell.zip&nbsp; in a new
+    directory,and make<br>
+    sure to remove any previous configuration file (cm, PlatformConfig).</p>
+
+    <p>To execute the demo run:</p>
+
+    <p>On Windows:</p>
+
+    <p>&nbsp; cd to the shell directory and run&nbsp;</p>
+
+    <blockquote>
+      <h1><small><small><small>jxta.exe</small></small></small></h1>
+    </blockquote>
+
+    <p>jxta.exe is included to simplify the detection of a Java Virtual
+    Machine on the Windows platform.&nbsp; jxta.exe uses several
+    algorithms to detect aninstalled JDK. If jxta.exe fails to find an
+    installed JDK, check to make surea Java JDK is installed and invoke
+    JXTA manually :</p>
+
+    <p><br>
+    </p>
+
+    <blockquote>
+      <b>java -classpath&nbsp;
+      ..\lib\jxta.jar;..\lib\jxtashell.jar net.jxta.impl.peergroup.Boot</b>
+    </blockquote>
+
+    <p><br>
+    On Unix</p>
+
+    <p><b>&nbsp;&nbsp;&nbsp; cd <i>shell directory</i><br>
+    &nbsp;&nbsp;&nbsp; chmod +x run.sh<br>
+     &nbsp;&nbsp;&nbsp; ./run.sh</b></p>
+  </body>
+</html>
+

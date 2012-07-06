@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Copyright (c) 2003 Sun Microsystems, Inc. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met: 
+
+1. Redistributions of source code must retain the above copyright notice, this 
+list of conditions and the following disclaimer. 
+
+2. Redistributions in binary form must reproduce the above copyright notice, 
+this list of conditions and the following disclaimer in the documentation and/or 
+other materials provided with the distribution. 
+
+3. The end-user documentation included with the redistribution, if any, must 
+include the following acknowledgment: "This product includes software developed 
+by the Sun Microsystems, Inc. for Project JXTA." Alternately, this 
+acknowledgment may appear in the software itself, if and wherever such 
+third-party acknowledgments normally appear. 
+
+4. The names "Sun" "Sun Microsystems, Inc." "JXTA" and "Project JXTA" must not 
+be used to endorse or promote products derived from this software without prior 
+written permission. For written permission, please contact Project JXTA at the 
+Project JXTA homepage <http://www.jxta.org>
+
+5. Products derived from this software may not be called "JXTA" nor may "JXTA" 
+appear in their name, without prior written permission of Sun. 
+
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, 
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SUN 
+MICROSYSTEMS INCORPORATED OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+
+This software consists of voluntary contributions made by many individuals on 
+behalf of Project JXTA. For more information on Project JXTA, please see the 
+Project JXTA homepage <http://www.jxta.org>
+
+This license is based on the BSD license adopted by the Apache Foundation. 
+
+$Id: build.xml,v 1.70 2006/10/19 02:46:54 bondolo Exp $
+
+-->
+<project name="jxse-shell" basedir="." default="all">
+
+  <description>
+    Build the JXTA Shell Project
+  
+    Definitions:
+  
+    net.jxta.build.version - The JXTA version being built, defaults to current date in ISO8601 format
+    net.jxta.build.nosign - If defined then the signing step will be skipped.
+    net.jxta.build.keystore - the keystore used to sign jars 
+    net.jxta.build.storepass - keystore passphrase to sign jars 
+    net.jxta.build.signeralias - the keystore alias used to sign jars 
+    net.jxta.build.keypass - the passphrase of the signer alias to sign jars
+
+    debug - Passed to java compiler. Generate debugging information.
+    deprecation - Passed to java compiler. Warn about deprecations.
+    optimize - Passed to java compiler. Generate optimized code.
+    source - Passed to java compiler. Source (and target) version.
+    net.jxta.build.compiler - java compiler to use.
+
+    net.jxta.build.jnlp.baseurl - The base url at which the JNLPs will reside.
+        
+    net.jxta.tls.password - a PSE password that overrides the default of "password" 
+    net.jxta.jxta_home - the directory to be passed as JXTA_HOME to jxta. 
+    net.jxta.jvm.xms - minimum memory allocation (ie -Xms)
+    net.jxta.jvm.xmx - maximum memory allocation (ie -Xmx)
+  </description>
+  
+  <property name="jxtaroot" value="${basedir}/.." />
+  <property name="jxse" value="${jxtaroot}/jxta-jxse" />
+  <property name="jxsecms" value="${jxtaroot}/jxse-cms" />
+  <property name="jxsemetering" value="${jxtaroot}/jxse-metering" />
+  
+  <!-- Give user a chance to override without editing this file 
+         (and without typing -D each time it compiles it) -->
+  <property file=".ant.properties" />
+  <property file="${jxtaroot}/.ant.properties" />
+  <property file="${jxtaroot}/ant.properties" />
+  <property file="${user.home}/.ant.properties" />
+  
+  <!-- set global properties for this build -->
+  
+  <!-- Directories -->
+  <property name="build" value="${basedir}/classes" />
+  <property name="dist" value="${basedir}/dist" />
+  <property name="doc" value="${basedir}/doc" />
+  <property name="jnlp" value="${basedir}/jnlp" />
+  <property name="tmp" value="${basedir}/tmp"/>
+  
+  <!-- Complilation Flags -->
+  <property name="debug" value="on" />
+  <property name="deprecation" value="on" />
+  <property name="optimize" value="off" />
+  <property name="source" value="1.5"/>
+  <property name="net.jxta.build.compiler" value="modern" />
+  
+  <property name="net.jxta.build.socks.port" value="1080"/>
+
+  <property name="net.jxta.jvm.xms" value="64M"/>
+  <property name="net.jxta.jvm.xmx" value="192M"/>
+
+  <!-- Targets -->
+  
+  <!-- Include user specific targets -->
+  <import optional="true" file="${jxtaroot}/${ant.project.name}.build.xml" />
+
+  <target name="clean" description="Removes all files produced by build">
+    <delete dir="${build}" />
+    <delete dir="${dist}" />
+    <delete dir="${doc}" />
+    <delete dir="${jnlp}" />
+    <delete dir="${tmp}"/>
+  </target>
+    
+  <target name="paths">
+    <!-- JARs -->
+    <property name="jxtashelljar" value="${dist}/jxtashell.jar" />
+   
+    <!-- Paths -->
+    <fileset id="jxse.files" dir="${jxse}/dist">
+      <include name="*.jar" />
+    </fileset>
+        
+    <fileset id="jxse.lib.files" dir="${jxse}/lib">
+      <include name="*.jar" />
+    </fileset>
+
+<!--  
+    <fileset id="cms.files" dir="${jxsecms}/dist">
+      <include name="*.jar" />
+    </fileset>
+        
+    <fileset id="metering.files" dir="${jxsemetering}/dist">
+      <include name="*.jar" />
+    </fileset>
+-->
+
+    <path id="src">
+      <pathelement path="${basedir}/src" />
+      <pathelement path="${basedir}/launch" />
+    </path>
+  
+    <path id="compile.classpath">
+      <fileset refid="jxse.files"/>
+      <fileset refid="jxse.lib.files"/>
+    </path>
+    
+    <path id="run.classpath">
+      <path refid="compile.classpath"/>
+<!--
+      <fileset refid="cms.files"/>
+      <fileset refid="metering.files"/>
+-->
+    </path>
+    
+    <!-- set up the default net.jxta.jxta_home -->
+    <condition property="net.jxta.build.ospath" value="unix">
+      <os family="unix" />
+    </condition>
+    
+    <condition property="net.jxta.build.ospath" value="windows">
+      <os family="dos" />
+    </condition>
+    
+    <pathconvert targetos="${net.jxta.build.ospath}" property="net.jxta.jxta_home.default">
+     <map from="${basedir}/" to=""/>
+     <path id="x" path="${basedir}/.jxta"/>
+    </pathconvert>
+    
+    <condition property="net.jxta.jxta_home" value="${net.jxta.jxta_home.default}">
+      <not>
+        <isset property="net.jxta.jxta_home" />
+      </not>
+    </condition>
+  </target>
+     
+  <!-- Creates output directory; initializes build-time timestamp; and generates Metering
+           Settings source files -->
+  
+  <target name="prepare" depends="paths">
+    <!-- Create the time stamp -->
+    <tstamp />
+
+    <mkdir dir="${build}" />
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${doc}" />
+    <mkdir dir="${tmp}"/>
+ 
+    <!-- set up version property -->
+    <condition property="net.jxta.build.version" value="${DSTAMP}">
+      <not>
+        <isset property="net.jxta.build.version" />
+      </not>
+    </condition>
+    
+   <!-- set up security properties -->
+    <condition property="net.jxta.tls.password" value="password">
+      <not>
+        <isset property="net.jxta.tls.password" />
+      </not>
+    </condition>
+
+    <!-- set up the jnlp path. -->
+    <condition property="net.jxta.build.jnlp.baseurl" value="file://${basedir}/jnlp">
+      <not>
+        <isset property="net.jxta.build.jnlp.baseurl"/>
+      </not>
+    </condition>
+  </target>
+ 
+  <target name="compile" depends="prepare" description="Compile the source files">
+    <delete file="${jxtashelljar}" />
+
+    <javac compiler="${net.jxta.build.compiler}" destdir="${build}" source="${source}" target="${source}" debug="${debug}" deprecation="${deprecation}" optimize="${optimize}">
+      <compilerarg compiler="modern" value="-Xlint:all,-deprecation,-serial,-unchecked"/>
+      <src refid="src" />
+      <classpath refid="compile.classpath" />
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile" description="Creates JXTA Shell jar file">
+    <jar basedir="${build}"  jarfile="${jxtashelljar}">
+      <include name="net/**" />
+      <include name="Launch.class" />
+      <fileset dir="${basedir}">
+        <include name="license.txt" />
+      </fileset>
+      <fileset dir="${basedir}/src">
+        <include name="META-INF/services/net.jxta.*" />
+      </fileset>
+     
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Built-At" value="${DSTAMP}" />
+        <attribute name="Specification-Title" value="JXTA JXSE Shell" />
+        <attribute name="Specification-Version" value="2.0" />
+        <attribute name="Specification-Vendor" value="JXTA Organization" />
+        
+        <section name="net/jxta/impl/shell/">
+          <attribute name="Implementation-Title" value="JXSE Shell" />
+          <attribute name="Implementation-Version" value="${net.jxta.build.version}" />
+          <attribute name="Implementation-Vendor" value="shell.jxta.org" />
+          <attribute name="Implementation-URL" value="http://shell.jxta.org" />
+          <attribute name="sealed" value="true" />
+        </section>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="dosign" depends="make.ephemeral" unless="net.jxta.build.nosign" >
+    <echo>Signing with "${net.jxta.build.keystore}"</echo>
+    
+    <signjar jar="${jxtashelljar}" 
+        keystore="${net.jxta.build.keystore}"
+        storepass="${net.jxta.build.storepass}"
+        alias="${net.jxta.build.signeralias}"
+        keypass="${net.jxta.build.keypass}"/>
+  </target>
+
+  <target name="signjar" depends="jar, dosign" description="Signs the Shell JXTA Jar file" />
+
+  <!-- creates the ephemeral keystore unless there is a defined keystore. -->
+  <target name="make.ephemeral" unless="net.jxta.build.keystore">
+    <tempfile property="net.jxta.build.keystore" destdir="${tmp}" prefix="jxta.shell." suffix=".keystore" />
+    <property name="net.jxta.build.storepass" value="jxta.shell" />
+    <property name="net.jxta.build.signeralias" value="jxta.shell" />
+    <property name="net.jxta.build.keypass" value="jxta.shell" />
+    <property name="key.cn" value="shell.jxta.org" />
+    <property name="key.ou" value="${key.cn}" />
+    <property name="key.o" value="${key.cn}" />
+    <property name="key.c" value="US" />
+    <property name="key.validity" value="525" />
+    <genkey keystore="${net.jxta.build.keystore}" storepass="${net.jxta.build.storepass}" alias="${net.jxta.build.signeralias}" keypass="${net.jxta.build.keypass}" validity="${key.validity}">
+      <dname>
+        <param name="CN" value="${key.cn}" />
+        <param name="OU" value="${key.ou}" />
+        <param name="O" value="${key.o}" />
+        <param name="C" value="${key.c}" />
+      </dname>
+    </genkey>
+  </target>
+  
+  <target name="jnlp" depends="signjar" description="Build Shell JNLP distribution">
+    <delete dir="${jnlp}"/>
+    
+    <mkdir dir="${jnlp}" />    
+    
+    <!-- xxx: would be nice to derive the jar list -->
+    <echo file="${jnlp}/shell.jnlp"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      codebase="${net.jxta.build.jnlp.baseurl}"
+      href="shell.jnlp">
+  <information>
+    <title>JXSE Shell</title>
+    <vendor>jxse-shell.dev.java.net</vendor>
+    <homepage href="http://jxse-shell.dev.java.net"/>
+    <description>JXTA Shell for JXSE</description>
+    <shortcut>
+      <desktop online="true"/>
+      <menu submenu="JXTA" online="true"/>
+    </shortcut>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.5+" initial-heap-size="64m" max-heap-size="192m"/>
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.5+"/>
+    <package name="net.jxta.impl.shell.*" part="jxse-shell" recursive="true"/>
+    <jar href="lib/jxtashell.jar" main="true" download="eager"/>
+    <extension href="platform-ext.jnlp" />
+    <property name="net.jxta.tls.password" value="${net.jxta.tls.password}" />
+  </resources>
+  <application-desc main-class="Launch" />
+</jnlp>]]>
+</echo>
+
+    <echo file="${jnlp}/shell-ext.jnlp"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      codebase="${net.jxta.build.jnlp.baseurl}"
+      href="shell-ext.jnlp">
+  <information>
+    <title>JXSE Shell</title>
+    <vendor>jxse-shell.dev.java.net</vendor>
+    <homepage href="http://jxse-shell.dev.java.net"/>
+    <description>JXTA Shell</description>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+<!-- xxx: anon pkg resource Launch.class
+    <package name="net.jxta.impl.shell.*" part="jxse-shell" recursive="true"/>
+    <jar href="lib/jxtashell.jar" part="jxse-shell" download="lazy"/>
+-->
+    <jar href="lib/jxtashell.jar" download="lazy"/>
+  </resources>
+  <component-desc/>
+</jnlp>]]>
+</echo>
+    
+    <copy todir="${jnlp}/lib" file="${jxtashelljar}"/>
+  </target>
+
+<!--     
+  <target name="tar.bz2" depends="zip" description="Build Shell bzip2 distribution">
+    <delete file="${dist}/jxse-shell-${net.jxta.build.version}.tar.bz2" />
+    <tar destfile="${dist}/jxse-shell-${net.jxta.build.version}.tar.bz2" basedir="${dist}" compression="bzip2" longfile="gnu">
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/lib" file="${basedir}/license.txt" />
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/lib" refid="jxse.files"/>
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/lib" refid="jxse.lib.files"/>
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/lib" file="${jxtashelljar}" />
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/shell" dir="${basedir}/win32">
+            <include name="*.exe" />
+            <include name="*.html" />
+            <include name="*.sh" />
+            <include name="*.bat" />
+        </tarfileset>
+    </tar>
+  </target>
+
+  <target name="tar.gz" depends="zip" description="Build Shell gzip distribution">
+    <delete file="${dist}/jxse-shell-${net.jxta.build.version}.tar.gz" />
+    <tar destfile="${dist}/jxse-shell-${net.jxta.build.version}.tar.gz" basedir="${dist}" compression="gzip" longfile="gnu">
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/lib" file="${basedir}/license.txt" />
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/lib" refid="jxse.files"/>
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/lib" refid="jxse.lib.files"/>
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/lib" file="${jxtashelljar}" />
+        <tarfileset prefix="jxse-shell-${net.jxta.build.version}/shell" dir="${basedir}/win32">
+            <include name="*.exe" />
+            <include name="*.html" />
+            <include name="*.sh" />
+            <include name="*.bat" />
+        </tarfileset>
+    </tar>
+  </target>
+-->
+
+  <target name="zip" depends="jar" description="Build Shell Zip distribution">
+    <zip zipfile="${dist}/jxse-shell-${net.jxta.build.version}.zip" comment="JXSE Shell ${net.jxta.build.version} -- ${DSTAMP}">
+        <zipfileset prefix="jxse-shell-${net.jxta.build.version}/lib" file="${basedir}/license.txt" />
+        <zipfileset prefix="jxse-shell-${net.jxta.build.version}/lib" refid="jxse.files"/>
+        <zipfileset prefix="jxse-shell-${net.jxta.build.version}/lib" refid="jxse.lib.files"/>
+        <zipfileset prefix="jxse-shell-${net.jxta.build.version}/lib" file="${jxtashelljar}" />
+        <zipfileset prefix="jxse-shell-${net.jxta.build.version}/shell" dir="${basedir}/win32">
+            <include name="*.exe" />
+            <include name="*.html" />
+            <include name="*.sh" />
+            <include name="*.bat" />
+        </zipfileset>
+    </zip>
+  </target>
+
+  <target name="javadoc" depends="prepare" description="Creates HTML JavaDoc">
+    <javadoc source="${source}" destdir="${doc}" access="private" use="true"
+      overview="${basedir}/src/net/jxta/impl/shell/overview.html"
+      windowtitle="JXSE Shell ${net.jxta.build.version}" additionalparam="-breakiterator -quiet -notimestamp" >
+      <link href="http://java.sun.com/j2se/1.5.0/docs/api" />
+      <link href="http://www.bouncycastle.org/docs/docs1.5/" />
+      <link href="http://platform.jxta.org/nonav/java/api/"/>
+      <classpath>
+        <path refid="compile.classpath" />
+      </classpath>
+      <sourcepath refid="src" />
+      <package name="net.jxta.impl.shell.*"/>
+      <group title="JXSE Shell" packages="net.jxta.impl.shell.*"/>
+      <doctitle>JXSE Shell ${net.jxta.build.version}</doctitle>
+      <header>&lt;a href='http://jxta-jxse.dev.java.net' target='_blank'&gt;JXSE&lt;/a&gt;</header>
+      <footer>JXSE Shell</footer>
+    </javadoc>
+  </target>
+  
+  <target name="javadoc-tbz2" depends="javadoc" description="creates tar.bz2 file of javadoc">
+    <delete file="${dist}/jxse-shell-doc-${net.jxta.build.version}.tar.bz2" />
+    <tar destfile="${dist}/jxse-shell-doc-${net.jxta.build.version}.tar.bz2" basedir="${doc}" compression="bzip2" longfile="gnu">
+      <exclude name="**/CVS/**" />
+      <exclude name="**/.*" />
+    </tar>
+  </target>
+  
+  <target name="javadoc-tgz" depends="javadoc" description="creates tar.gz file of javadoc">
+    <delete file="${dist}/jxse-shell-doc-${net.jxta.build.version}.tar.gz" />
+    <tar destfile="${dist}/jxse-shell-doc-${net.jxta.build.version}.tar.gz" basedir="${doc}" compression="gzip" longfile="gnu">
+      <exclude name="**/CVS/**" />
+      <exclude name="**/.*" />
+    </tar>
+  </target>
+
+  <target name="javadoc-zip" depends="javadoc" description="Creates zip file of javadoc">
+    <zip destfile="${dist}/jxse-shell-doc-${net.jxta.build.version}.zip" basedir="${doc}" comment="JXSE Shell JavaDoc ${net.jxta.build.version} -- ${DSTAMP}">
+      <exclude name="**/CVS/**" />
+      <exclude name="**/.*" />
+    </zip>
+  </target>
+  
+  <target name="source-tbz2" depends="prepare" description="Creates source tar.gz file">
+    <delete file="${dist}/jxse-shell-src-${net.jxta.build.version}.tar.bz2" />
+    <tar destfile="${dist}/jxse-shell-src-${net.jxta.build.version}.tar.bz2" compression="bzip2" longfile="gnu">
+      <tarfileset dir="${basedir}" prefix="jxse-shell-src-${net.jxta.build.version}">
+        <exclude name="**/.*" />
+        <exclude name="**/.*/**" />
+        <exclude name="**/classes/**" />
+        <exclude name="dist/**" />
+        <exclude name="doc/**" />
+        <exclude name="nbproject/private/**" />
+        <exclude name="jnlp/**" />
+        <exclude name="tmp/**" />
+        <exclude name="www/**" />
+      </tarfileset>
+    </tar>
+  </target>
+
+  <target name="source-tgz" depends="prepare" description="Creates source tar.gz file">
+    <delete file="${dist}/jxse-shell-src-${net.jxta.build.version}.tar.gz" />
+    <tar destfile="${dist}/jxse-shell-src-${net.jxta.build.version}.tar.gz" compression="gzip" longfile="gnu">
+      <tarfileset dir="${basedir}" prefix="jxse-shell-src-${net.jxta.build.version}">
+        <exclude name="**/.*" />
+        <exclude name="**/.*/**" />
+        <exclude name="**/classes/**" />
+        <exclude name="dist/**" />
+        <exclude name="doc/**" />
+        <exclude name="jnlp/**" />
+        <exclude name="nbproject/private/**" />
+        <exclude name="tmp/**" />
+        <exclude name="www/**" />
+      </tarfileset>
+    </tar>
+  </target>
+    
+  <target name="source-zip" depends="prepare" description="Creates source zip file">
+    <zip destfile="${dist}/jxse-shell-src-${net.jxta.build.version}.zip" comment="JXSE Shell ${net.jxta.build.version} -- ${DSTAMP}">
+      <zipfileset dir="${basedir}" prefix="jxse-shell-src-${net.jxta.build.version}">
+        <exclude name="**/.*" />
+        <exclude name="**/.*/**" />
+        <exclude name="**/classes/**"/>
+        <exclude name="dist/**" />
+        <exclude name="doc/**" />
+        <exclude name="jnlp/**" />
+        <exclude name="nbproject/private/**" />
+        <exclude name="tmp/**" />
+        <exclude name="www/**" />
+      </zipfileset>
+    </zip>
+  </target>
+  
+  <target name="run" depends="jar" description="Start the shell application">
+    <java classname="Launch" fork="yes">
+      <sysproperty key="net.jxta.logging.Logging" value="FINEST" />
+      <sysproperty key="java.util.logging.config.file" value="${jxtaroot}/logging.properties" />
+      <jvmarg value="-Dnet.jxta.tls.password=${net.jxta.tls.password}" />
+      <sysproperty key="JXTA_HOME" value="${net.jxta.jxta_home}" />
+      <sysproperty key="com.sun.management.jmxremote" value="true" />
+      <sysproperty key="net.jxta.tls.password" value="${net.jxta.tls.password}" />
+      <jvmarg value="-Xms${net.jxta.jvm.xms}" />
+      <jvmarg value="-Xmx${net.jxta.jvm.xmx}" />
+      <classpath>
+        <path refid="run.classpath"/>
+        <pathelement location="${jxtashelljar}"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="all" depends="clean, signjar" description="Clean build of core targets" />
+  
+  <target name="dist" depends="clean, source-tbz2, source-tgz, source-zip, zip, jnlp, javadoc-tbz2, javadoc-tgz, javadoc-zip" description="Clean build of all dist targets" />
+</project>

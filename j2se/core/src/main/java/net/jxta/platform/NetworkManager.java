@@ -105,8 +105,8 @@ public class NetworkManager implements RendezvousListener {
      */
     private final static transient Logger LOG = Logger.getLogger(NetworkManager.class.getName());
 
-    protected final transient URI publicSeedingRdvURI = URI.create("http://i2peer.net");
-    protected final transient URI publicSeedingRelayURI = URI.create("http://i2peer.net");
+    protected final transient URI publicSeedingRdvURI = URI.create("http://ec2-107-21-173-139.compute-1.amazonaws.com:9700");
+    protected final transient URI publicSeedingRelayURI = URI.create("http://ec2-107-21-173-139.compute-1.amazonaws.com:9700");
 
     /**
      * Define node standard node operating modes

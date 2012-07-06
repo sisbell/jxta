@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+The JXTA Shell provides an interactive environment to the JXTA platform. The
+Shell provides basic commands to discover peers and peergroups, to join and
+resign from peergroups, to create pipes between peers, and to send pipe
+messages.
+
+<p/>The Shell provides environment variables that permit binding symbolic
+names to JXTA platform objects. Environment variables allow Shell commands
+to exchange data. The command 'env' displays all defined environment
+variables in the current Shell session.
+
+<p/>The Shell creates a JXTA InputPipe (<code>stdin</code>) for reading
+input from the keyboard, and a JXTA OutputPipe (<code>stdout</code>) to
+display information on the Shell console. All commands executed by the Shell
+have their initial <code>stdin</code> and <code>stdout</code> set up to the
+Shell's stdin and stdout pipes. The Shell also creates the environment
+variable <code>stdgroup</code> that contains the current JXTA PeerGroup in
+which the Shell and commands are executed.
+
+<p/>The <code>man</code> command is available to list the commands available.
+Type <code>man <i>&lt;command&gt;</i></code> to get help about a particular
+command.
+</BODY>
+</HTML>
