@@ -14,15 +14,17 @@ public final class HelloResponse implements Message {
 	private boolean isPropagated;
 
 	private String protocolVersion;
-	
+
 	private String peerId;
+
+	private static final char SPACE = 0x20;
 
 	public HelloResponse() {
 	}
 
 	public HelloResponse(URI destinationUri, URI sourceUri, String peerId,
 			boolean isPropagated, String protocolVersion) {
-		super();	
+		super();
 		this.destinationUri = destinationUri;
 		this.sourceUri = sourceUri;
 		this.peerId = peerId;
@@ -70,22 +72,35 @@ public final class HelloResponse implements Message {
 		this.protocolVersion = protocolVersion;
 	}
 
+	public String toStringResponse() {
+		StringBuilder hello = new StringBuilder();
+		hello.append("JXTAHELLO").append(SPACE)
+				.append(destinationUri.toString()).append(SPACE)
+				.append(sourceUri.toString()).append(SPACE)
+				.append(peerId).append(SPACE)
+				.append(isPropagated ? "1" : "0").append(SPACE)
+				.append(protocolVersion);
+		return hello.toString();
+	}
+
 	public static HelloResponse fromStringResponse(String... response)
 			throws URISyntaxException {
 		if (response.length != 5) {
 			throw new IllegalArgumentException(
-					"Wrong number of arguments: expected 5, found: " + response.length);
+					"Wrong number of arguments: expected 5, found: "
+							+ response.length);
 		}
 
-		return new HelloResponse(new URI(response[0]), new URI(response[1]), response[2],
-				Boolean.parseBoolean(response[3]), response[4]);
+		return new HelloResponse(new URI(response[0]), new URI(response[1]),
+				response[2], Boolean.parseBoolean(response[3]), response[4]);
 	}
 
 	@Override
 	public boolean persistMessage() {
-		//Implementation specific storage
-		//Just print out for now
-		System.out.println("Dest = " + destinationUri + ", Src = " + sourceUri + ", ID = " + peerId);
+		// Implementation specific storage
+		// Just print out for now
+		System.out.println("Dest = " + destinationUri + ", Src = " + sourceUri
+				+ ", ID = " + peerId);
 		return true;
 	}
 

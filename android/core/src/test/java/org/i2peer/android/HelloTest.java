@@ -33,6 +33,12 @@ public class HelloTest extends TestCase {
 			}
 			
 		});
-
+	}
+	
+	public void testToMessageResponse() throws Exception {
+		HelloResponse response = new HelloResponse(new URI("tcp://i2peer.net"), 
+				new URI("tcp://i2peer.org"), "peerid", false, "3.0");
+		
+		assertEquals("JXTAHELLO tcp://i2peer.net tcp://i2peer.org peerid 0 3.0", response.toStringResponse());
 	}
 }
