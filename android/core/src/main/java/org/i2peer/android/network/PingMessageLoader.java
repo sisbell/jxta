@@ -21,9 +21,9 @@ import java.nio.channels.SocketChannel;
 
 import org.i2peer.android.Message;
 import org.i2peer.android.MessageLoader;
-import org.i2peer.android.messages.HelloResponse;
+import org.i2peer.android.messages.PingResponse;
 
-public class HelloMessageLoader extends MessageLoader<InetSocketAddress> {
+public class PingMessageLoader extends MessageLoader<InetSocketAddress> {
 
 	private static ByteBuffer HELLO = ByteBuffer.wrap("JXTAHELLO ".getBytes());
 	
@@ -47,7 +47,7 @@ public class HelloMessageLoader extends MessageLoader<InetSocketAddress> {
 		}
 
 		try {
-			HelloResponse response = HelloResponse.fromStringResponse(message
+			PingResponse response = PingResponse.fromStringResponse(message
 					.toString().trim().split("[ ]"));
 			if (!response.persistMessage()) {
 				throw new IOException("Unable to persist message ");

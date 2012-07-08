@@ -16,7 +16,7 @@ package org.i2peer.android;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
-import org.i2peer.android.messages.HelloResponse;
+import org.i2peer.android.messages.PingResponse;
 import org.i2peer.android.network.Messenger;
 
 import junit.framework.TestCase;
@@ -25,7 +25,7 @@ public class HelloTest extends TestCase {
 	
 	//Network test
 	public void testSayHello() throws Exception {
-		Messenger.sayHelloTo(new InetSocketAddress("i2peer.net", 9701), new OnMessageLoadedListener() {
+		Messenger.ping(new InetSocketAddress("i2peer.net", 9701), new OnMessageLoadedListener() {
 
 			@Override
 			public void onMessageReceive(Message message) {
@@ -36,7 +36,7 @@ public class HelloTest extends TestCase {
 	}
 	
 	public void testToMessageResponse() throws Exception {
-		HelloResponse response = new HelloResponse(new URI("tcp://i2peer.net"), 
+		PingResponse response = new PingResponse(new URI("tcp://i2peer.net"), 
 				new URI("tcp://i2peer.org"), "peerid", false, "3.0");
 		
 		assertEquals("JXTAHELLO tcp://i2peer.net tcp://i2peer.org peerid 0 3.0", response.toStringResponse());

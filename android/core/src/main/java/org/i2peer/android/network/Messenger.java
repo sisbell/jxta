@@ -21,9 +21,9 @@ import org.i2peer.android.OnMessageLoadedListener;
 
 public class Messenger {
 
-	public static void sayHelloTo(InetSocketAddress destinationAddress, OnMessageLoadedListener listener)
+	public static void ping(InetSocketAddress destinationAddress, OnMessageLoadedListener listener)
 			throws IOException {
-		HelloMessageLoader loader = new HelloMessageLoader();
+		PingMessageLoader loader = new PingMessageLoader();
 		loader.registerListener(listener);
 		loader.execute(destinationAddress);
 	}

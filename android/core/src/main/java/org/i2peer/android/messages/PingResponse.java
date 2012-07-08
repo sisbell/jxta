@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 
 import org.i2peer.android.Message;
 
-public final class HelloResponse implements Message {
+public final class PingResponse implements Message {
 
 	private URI destinationUri;
 
@@ -19,10 +19,10 @@ public final class HelloResponse implements Message {
 
 	private static final char SPACE = 0x20;
 
-	public HelloResponse() {
+	public PingResponse() {
 	}
 
-	public HelloResponse(URI destinationUri, URI sourceUri, String peerId,
+	public PingResponse(URI destinationUri, URI sourceUri, String peerId,
 			boolean isPropagated, String protocolVersion) {
 		super();
 		this.destinationUri = destinationUri;
@@ -83,7 +83,7 @@ public final class HelloResponse implements Message {
 		return hello.toString();
 	}
 
-	public static HelloResponse fromStringResponse(String... response)
+	public static PingResponse fromStringResponse(String... response)
 			throws URISyntaxException {
 		if (response.length != 5) {
 			throw new IllegalArgumentException(
@@ -91,7 +91,7 @@ public final class HelloResponse implements Message {
 							+ response.length);
 		}
 
-		return new HelloResponse(new URI(response[0]), new URI(response[1]),
+		return new PingResponse(new URI(response[0]), new URI(response[1]),
 				response[2], Boolean.parseBoolean(response[3]), response[4]);
 	}
 
