@@ -16,8 +16,14 @@ package org.i2peer.android;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
+import org.i2peer.android.jxta.JxtaMessenger;
+import org.i2peer.android.jxta.JxtaModule;
 import org.i2peer.android.messages.PingResponse;
 import org.i2peer.android.network.Messenger;
+import org.i2peer.android.network.PingMessageLoader;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 import junit.framework.TestCase;
 
@@ -25,13 +31,15 @@ public class HelloTest extends TestCase {
 	
 	//Network test
 	public void testSayHello() throws Exception {
-		Messenger.ping(new InetSocketAddress("i2peer.net", 9701), new OnMessageLoadedListener() {
+		Injector injector = Guice.createInjector(new JxtaModule());
+		Messenger m = injector.getInstance(Messenger.class);
+		
+		m.ping(new InetSocketAddress("i2peer.net", 9701), new OnMessageLoadedListener() {
 
 			@Override
 			public void onMessageReceive(Message message) {
 				System.out.println("Received message");
-			}
-			
+			}	
 		});
 	}
 	

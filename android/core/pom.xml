@@ -12,6 +12,12 @@
 	<name>i2peer: i2peer-android-core</name>
 	
 	<dependencies>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>3.0</version>
+			<classifier>no_aop</classifier>		
+		</dependency>    
 	    <!-- Test Dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
