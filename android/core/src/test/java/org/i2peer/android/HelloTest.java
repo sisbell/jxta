@@ -15,12 +15,16 @@ package org.i2peer.android;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.channels.SelectionKey;
 
 import org.i2peer.android.jxta.JxtaMessenger;
 import org.i2peer.android.jxta.JxtaModule;
 import org.i2peer.android.messages.PingResponse;
 import org.i2peer.android.network.Messenger;
 import org.i2peer.android.network.PingMessageLoader;
+import org.i2peer.reactor.InitiationDispatcher;
+import org.i2peer.reactor.impl.DefaultDispatcher;
+import org.i2peer.reactor.impl.jxta.JxtaAcceptor;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -48,5 +52,15 @@ public class HelloTest extends TestCase {
 				new URI("tcp://i2peer.org"), "peerid", false, "3.0");
 		
 		assertEquals("JXTAHELLO tcp://i2peer.net tcp://i2peer.org peerid 0 3.0", response.toStringResponse());
+	}
+	
+	public void testA() throws Exception {
+		InitiationDispatcher jxtaDispatcher = new DefaultDispatcher();
+
+		jxtaDispatcher.registerHandler(new JxtaAcceptor(new InetSocketAddress(
+				9736), jxtaDispatcher), SelectionKey.OP_ACCEPT);
+
+		jxtaDispatcher.handleEvents();		
+		while(true) { }
 	}
 }

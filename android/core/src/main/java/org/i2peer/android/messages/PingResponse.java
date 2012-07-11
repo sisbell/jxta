@@ -79,7 +79,7 @@ public final class PingResponse implements Message {
 				.append(sourceUri.toString()).append(SPACE)
 				.append(peerId).append(SPACE)
 				.append(isPropagated ? "1" : "0").append(SPACE)
-				.append(protocolVersion);
+				.append(protocolVersion).append("\\r");
 		return hello.toString();
 	}
 
